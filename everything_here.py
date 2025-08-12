@@ -135,6 +135,7 @@ img = np.zeros((HEIGHT_FIELD * SIZE_SQUARE, WEIGHT_FIELD * SIZE_SQUARE, 3), np.u
 img.fill(255)
 
 # full = cv.imread('C:/Rabota/PythonSamples/Programming/To_write_smth/Python/Game life/Squares.png')
+#at first i wanted to do it this way, but i understood that this way a wont be able to scale the field just in code. By this reason i didnt applied the file with drawn squares
 
 # tiles = {}
 # tiles[CellType.empty] = full[:, 0:100, :]
@@ -160,3 +161,4 @@ while True:
     output = game(output)
 
     
+
