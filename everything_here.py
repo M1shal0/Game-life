@@ -4,7 +4,7 @@ from enum import IntFlag, auto
 
 
 HEIGHT_FIELD = 50
-WEIGHT_FIELD = 50
+WIDTH_FIELD = 50
 SIZE_SQUARE = 10
 THICKNESS = 1
 
@@ -16,10 +16,10 @@ class CellType(IntFlag):
 
 def game(start_field: list) -> list:
     field1 = [x for x in start_field]
-    field2 = [[0] * (WEIGHT_FIELD + 2) for _ in range(HEIGHT_FIELD + 2)]
+    field2 = [[0] * (WIDTH_FIELD + 2) for _ in range(HEIGHT_FIELD + 2)]
     cnt_neibrs = 0
     for i in range(1, HEIGHT_FIELD + 1):
-        for j in range(1, WEIGHT_FIELD + 1):
+        for j in range(1, WIDTH_FIELD + 1):
             # if 0 < i < 4 and 0 < j < 4: 
             if field1[i - 1][j - 1] == 1:
                 cnt_neibrs += 1
@@ -58,7 +58,7 @@ def draw_game(field: list, img):
     chos_xe = 0
     chos_ye = 0
     for x in range(1, HEIGHT_FIELD + 1):
-        for y in range(1, WEIGHT_FIELD + 1):
+        for y in range(1, WIDTH_FIELD + 1):
             a = field[y][x]
             if a == 0:
                 # img[ys:ye, xs:xe, :] = tiles[CellType.full]
@@ -106,7 +106,7 @@ def get_start_position(field: list) -> list:
         if ch == ord('w') or ch == 2490368:
             y = max((y - 1), 1)
         elif ch == ord('d') or ch == 2555904:
-            x = min((x + 1), WEIGHT_FIELD + 1)
+            x = min((x + 1), WIDTH_FIELD + 1)
         elif ch == ord('s') or ch == 2621440:
             y = min((y + 1), HEIGHT_FIELD + 1)
         elif ch == ord('a') or ch == 2424832:
@@ -129,13 +129,16 @@ def get_start_position(field: list) -> list:
         oldy = y
         if ch == 27:
             break
+    if was_full:
+        field[oldy][oldx] = 1
+    else:
+        field_start[oldy][oldx] = 0
     return field
 
-img = np.zeros((HEIGHT_FIELD * SIZE_SQUARE, WEIGHT_FIELD * SIZE_SQUARE, 3), np.uint8)
+img = np.zeros((HEIGHT_FIELD * SIZE_SQUARE, WIDTH_FIELD * SIZE_SQUARE, 3), np.uint8)
 img.fill(255)
 
 # full = cv.imread('C:/Rabota/PythonSamples/Programming/To_write_smth/Python/Game life/Squares.png')
-#at first i wanted to do it this way, but i understood that this way a wont be able to scale the field just in code. By this reason i didnt applied the file with drawn squares
 
 # tiles = {}
 # tiles[CellType.empty] = full[:, 0:100, :]
@@ -143,8 +146,8 @@ img.fill(255)
 # tiles[CellType.choose_square] = full[:, 200:300, :]
 # tiles[CellType.choose_square_full] = full[:, 300:400, :]
 
-field_start = [[0] * (WEIGHT_FIELD + 2) for _ in range(HEIGHT_FIELD + 2)]
-img1 = np.zeros((HEIGHT_FIELD * SIZE_SQUARE, WEIGHT_FIELD * SIZE_SQUARE, 3), np.uint8)
+field_start = [[0] * (WIDTH_FIELD + 2) for _ in range(HEIGHT_FIELD + 2)]
+img1 = np.zeros((HEIGHT_FIELD * SIZE_SQUARE, WIDTH_FIELD * SIZE_SQUARE, 3), np.uint8)
 img1.fill(255)
 
 field_start = get_start_position(field_start)
@@ -154,12 +157,10 @@ while True:
     img.fill(255)
     draw_game(output, img)
     cv.imshow('Game life', img)
-    ch = cv.waitKeyEx(100)
+    ch = cv.waitKeyEx()
     if ch == 27:
         break
     temp = output
     output = game(output)
 
     
-
-
