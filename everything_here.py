@@ -147,7 +147,7 @@ field_start = [[0] * (WEIGHT_FIELD + 2) for _ in range(HEIGHT_FIELD + 2)]
 img1 = np.zeros((HEIGHT_FIELD * SIZE_SQUARE, WEIGHT_FIELD * SIZE_SQUARE, 3), np.uint8)
 img1.fill(255)
 
-get_start_position(field_start)
+field_start = get_start_position(field_start)
 output = game(field_start)
 while True:
     img[...] = 0
@@ -161,4 +161,5 @@ while True:
     output = game(output)
 
     
+
 
